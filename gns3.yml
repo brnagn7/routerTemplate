@@ -24,6 +24,31 @@
     register: config
 
   - name: Print output
-    debug: msg="{{ config.stdout }}"
+    debug: msg=config.stdout
 
+  - name: Create IPSec ACL
+    ios_config:
+     provider: "{{ provider }}"
+     authorize: yes
+     lines:
+       - 10 permit ip host 1.1.1.1 any
+       - 20 deny ip any any
+     parents: ['ip access-list extended IPSec']
+     before: ['no ip access-list extended IPSec']
+     match: exact
+
+  - name: Run the IPSec ACL
+    ios_command:
+     provider: "{{ provider }}"
+     commands:
+      - show access-list IPSec
+    register: after_acl
+
+  - debug: msg=after_acl.stdout_lines
+
+
+
+
+
+    
 
