@@ -1,0 +1,29 @@
+---
+- hosts: R2
+  gather_facts: true
+  connection: local
+
+  tasks:
+
+  - name: Supply Credentials
+    include_vars: secrets.yml
+
+  - name: Use Credentials
+    set_fact:
+     provider:
+      host: "{{ ansible_host }}"
+      username: "{{ creds['username'] }}"
+      password: "{{ creds['password'] }}"
+      auth_pass: "{{ creds['auth_pass'] }}"
+  
+  - name: show interfaces
+    ios_command:
+     provider: "{{ provider }}"
+     commands:
+      - show ip int brief
+    register: config
+
+  - name: Print output
+    debug: msg="{{ config.stdout }}"
+
+
