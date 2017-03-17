@@ -1,0 +1,37 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+  - set_fact:
+      domainname: example.com
+      hostname: dynamichost.example.com
+      rax_username: rackspace_username
+      rax_apikey: rackspace_apikey
+      update_dns: False
+
+  - name: Identify current public IPv4 address of network
+    command: curl -4 icanhazip.com
+    register: ipv4_address
+
+  - name: Identify current DNS A record of Dynamic DNS host
+    command: dig +short {{ hostname }}
+    register: dyndns_host
+
+  - name: Determine if DNS A record needs to be updated 
+    set_fact:
+      update_dns: True 
+    when: ipv4_address.stdout != dyndns_host.stdout
+
+  - name: Update DNS A record
+    local_action:
+      module: rax_dns_record
+      username: "{{ rax_username }}"  
+      api_key: "{{ rax_apikey }}" 
+      domain: "{{ domainname }}"
+      name: "{{ hostname }}"
+      data: "{{ ipv4_address.stdout }}"
+      type: A
+    register: a_record
+    when: update_dns == True
