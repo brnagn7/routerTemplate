@@ -1,0 +1,104 @@
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname {{ item.hostname }}
+!
+boot-start-marker
+boot-end-marker
+!
+enable password {{ item.enpass }}
+!
+no aaa new-model
+memory-size iomem 5
+no ip icmp rate-limit unreachable
+ip cef
+!
+!
+!
+!
+no ip domain lookup
+ip domain name {{ item.domain }}
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+username {{ item.username }}  privilege 15 password 0 {{ item.unamepw }}
+archive
+ log config
+  hidekeys
+! 
+!
+!
+ip tcp synwait-time 5
+ip ssh authentication-retries 4
+ip ssh version 2
+!
+!         
+!
+interface FastEthernet0/0
+ ip address {{ item.fa0ip }} {{ item.fa0sm }}
+ duplex auto
+ speed auto
+!
+interface Serial0/0
+ ip address {{ item.s00ip }} {{ item.s00ip }}
+ shutdown
+ clock rate 2000000
+!
+interface FastEthernet0/1
+ ip address {{ item.fa01ip }} {{ item.fa01sm }}
+ shutdown
+ duplex auto
+ speed auto
+!
+interface Serial0/1
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/2
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+interface Serial0/3
+ no ip address
+ shutdown
+ clock rate 2000000
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+no cdp log mismatch duplex
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0
+ privilege level 15
+ password cisco
+ login local
+ transport input all
+ transport output all
+line vty 1 4
+ login local
+ transport input all
+ transport output all
+!
+!
+end
+
