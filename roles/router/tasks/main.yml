@@ -1,4 +1,8 @@
 ---
-- name: Generate configuration files
-  template: src=router.j2 dest=/root/ANSIBLE/CFGS/{{item.hostname}}.txt
-  with_items: "{{ test_routers }}"
+- name: Generate 2600 configuration files
+  template: src=2600.j2 dest=/root/ANSIBLE/CFGS/{{item.hostname}}.txt
+  with_items: "{{ routers_2600 }}"
+
+- name: Generate 1841 configuration files
+  template: src=1841.j2 dest=/root/ANSIBLE/CFGS/{{item.hostname}}.txt
+  with_items: "{{ routers_1841 }}"

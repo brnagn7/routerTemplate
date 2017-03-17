@@ -1,8 +1,6 @@
 ---
-test_routers:
-   - { hostname: DR934BDE01, enpass: cisco, domain: comms.mil.au, username: admin, unamepw: cisco, fa0ip: 192.168.12.1, fa0sm: 255.255.255.0, s00ip: 10.10.10.1, s00sm: 255.255.255.252, fa01ip: 172.16.23.1, fa01sm: 255.255.255.0}
-   - { hostname: EDDIE, enpass: cisco, domain: comms.mil.au, username: admin, unamepw: cisco, fa0ip: 192.168.9.13, fa0sm: 255.255.255.0, s00ip: 25.25.25.1, s00sm: 255.255.255.252, fa01ip: 192.16.67.1, fa01sm: 255.255.255.240}
- #  - { hostname: DR934BDE02 }
- #  - { hostname: DR934BDE03 }
- #  - { hostname: TR934BDE01 }
- #  - { hostname: TR934BDE02 }
+routers_2600:
+  - { hostname: R-2600, enpass: cisco, domain: comms.mil.au, username: admin, unamepw: cisco, fa0ip: 192.168.12.1, fa0sm: 255.255.255.0, s00ip: 10.10.10.1, s00sm: 255.255.255.252, fa01ip: 172.16.23.1, fa01sm: 255.255.255.0}
+
+routers_1841:
+  - { hostname: R-1841, enpass: cisco, domain: comms.mil.au, username: admin, unamepw: ds, fa0ip: 192.168.9.13, fa0sm: 255.255.255.0, s00ip: 25.25.25.1, s00sm: 255.255.255.252, fa01ip: 192.16.67.1, fa01sm: 255.255.255.240}
